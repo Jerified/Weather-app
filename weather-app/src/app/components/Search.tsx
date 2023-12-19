@@ -48,7 +48,7 @@ export default function Search({  handleClick }: any) {
             <input
               className="p-3 flex-1 pl-12 w- rounded-full bg-black shadow-lg focus:border-gray-200 outline-none shadow-gray text-gray-50 placeholder:text-gray-400"
               placeholder="Search for your preffered city"
-              onInput={(e) => setValue(e.target.value)}
+              onChange={(e) => setValue(e.target.value)}
               value={value}
             />
         </div>
