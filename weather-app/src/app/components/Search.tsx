@@ -3,8 +3,9 @@ import React, { useEffect, useState } from "react"
 import useDebounce from "../hooks/useDebounce"
 import { FaLocationCrosshairs } from 'react-icons/fa6'
 import { CiSearch } from 'react-icons/ci'
+import DailyForecast from './DailyForecast'
 
-export default function Search({  handleClick }: any) {
+export default function Search({ handleClick, data }: any) {
   const [value, setValue] = useState("")
   const [show, setShow] = useState(false)
   const debouncedValue = useDebounce(value, 500)
@@ -39,6 +40,8 @@ export default function Search({  handleClick }: any) {
     setToggle(true)
   }
 
+  console.log(data)
+  console.log(city)
   return (
     <div className="">
     <div className="w-full flex md:gap-6 gap-3 items-center text-white my-5">
@@ -46,22 +49,17 @@ export default function Search({  handleClick }: any) {
         <div className="w-full flex relative">
             <CiSearch className='absolute top-[0.65rem] left-3 text-3xl' />
             <input
-              className="p-3 flex-1 pl-12 w- rounded-full bg-black shadow-lg focus:border-gray-200 outline-none shadow-gray text-gray-50 placeholder:text-gray-400"
+              className="p-3 flex-1 pl-12 w- rounded-full min-w-[100%,20rem] bg-gray-400 shadow-lg focus:border-gray-200 outline-none shadow-gray text-gray-50 placeholder:text-black"
               placeholder="Search for your preffered city"
               onChange={(e) => setValue(e.target.value)}
               value={value}
             />
         </div>
       ) : (
-        <div onClick={()=>setToggle(false)} className="p-2 w-full rounded-md bg-white border border-gray-400 focus:border-gray-200 outline-none shadow shadow-gray-300 text-gray-50 placeholder:text-gray-400">
+        <div onClick={()=>setToggle(false)} className="p-2 w-full rounded-md bg-white border border-gray-400 focus:border-gray-200 outline-none shadow shadow-gray-300 text-black placeholder:text-gray-400 ">
           {city}
         </div>
       )}
-      <div className="w-[50%]">
-        <button className="bg-green-600 px-3 py-4 rounded-full font-semibold tracking-wider text-[0.8rem] md:text-sm flex items-center gap-2">
-            <FaLocationCrosshairs className='text-black text-xl' /> Current Location
-        </button>
-      </div>
     </div>
     <ul className="bg-gray-800 divide-y divide-gray-500 rounded-md ">
         {show &&
@@ -71,6 +69,14 @@ export default function Search({  handleClick }: any) {
             </li>
           ))}
       </ul>
+
+      <div className="fixed bottom-3  right-3">
+        <button className="bg-green-600 hover:bg-green-700 text-white transition duration-300 px-3 py-4 rounded-full font-semibold tracking-wider text-[0.8rem] md:text-sm flex items-center gap-2">
+            <FaLocationCrosshairs className='text-white text-xl' /> Current Location
+        </button>
+      </div>
+
+      <DailyForecast data={data}  city={city} />
     </div>
   )
 }

@@ -12,12 +12,12 @@ export default function Home() {
   const handleClick = useCallback((city: any) => {
     const { latitude, longitude, timezone } = city
     fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,rain,showers,snowfall,weathercode,windspeed_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=${timezone}`
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,rain,showers,snowfall,weathercode,windspeed_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=${timezone}&timeformat=unixtime`
     )
       .then((res) => res.json())
       .then((data) => {
         // setData(data)
-        // console.log(data)
+        console.log(data)
         const { hourly, daily } = data
         let hourlyDataSet = []
         for(let i=0; i<hourly?.time.length; i++)
@@ -52,12 +52,14 @@ export default function Home() {
        
         setHourlyData(hourlyDataSet)
        
+        console.log(hourlyDataSet)
       })
+
   }, [])
 
   return (
-   <main className=" min-h-screen px-4">
-    <Search handleClick={handleClick} />
+   <main className=" min-h-screen px-4 relative ">
+    <Search handleClick={handleClick} data={dailyData} />
    </main>
   )
 }
