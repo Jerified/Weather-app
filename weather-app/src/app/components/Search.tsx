@@ -5,13 +5,19 @@ import { FaLocationCrosshairs } from 'react-icons/fa6'
 import { CiSearch } from 'react-icons/ci'
 import DailyForecast from './DailyForecast'
 
-export default function Search({ handleClick, data }: any) {
-  const [value, setValue] = useState("")
+interface InputProps {
+  handleSearch: (event: React.KeyboardEvent<HTMLInputElement>) => void
+  setLocation: React.Dispatch<React.SetStateAction<string>>
+  handleClick: (event: React.KeyboardEvent<HTMLInputElement>) => void
+  location: string
+}
+export default function Search({ handleClick, handleSearch, setLocation, location }: InputProps) {
+  // const [value, setValue] = useState("")
   const [show, setShow] = useState(false)
-  const debouncedValue = useDebounce(value, 500)
+  const debouncedValue = useDebounce(location, 500)
   const [cities, setCities] = useState([])
   const [city, setCity] = useState("")
-  const [toggle, setToggle] = useState(false)
+  // const [toggle, setToggle] = useState(false)
 
   useEffect(() => {
     if (debouncedValue == "") {
@@ -29,37 +35,40 @@ export default function Search({ handleClick, data }: any) {
         }
 
         setCities(data.results)
+        // console.log(cities)
         setShow(true)
       })
   }, [debouncedValue])
 
   function handleClickEvent(city: any) {
-    handleClick(city)
+    // console.log(city)
+    handleClick(city.name)
     setCity(city.name)
     setShow(false)
-    setToggle(true)
+    // setToggle(true)
   }
 
-  console.log(data)
+  // console.log(data)
   console.log(city)
   return (
     <div className="">
     <div className="w-full flex md:gap-6 gap-3 items-center text-white my-5">
-      {!toggle ? (
+      {/* {!toggle ? ( */}
         <div className="w-full flex relative">
             <CiSearch className='absolute top-[0.65rem] left-3 text-3xl' />
             <input
               className="p-3 flex-1 pl-12 w- rounded-full min-w-[100%,20rem] bg-gray-400 shadow-lg focus:border-gray-200 outline-none shadow-gray text-gray-50 placeholder:text-black"
               placeholder="Search for your preffered city"
-              onChange={(e) => setValue(e.target.value)}
-              value={value}
+              onKeyDown={handleSearch}
+              onChange={(e) => setLocation(e.target.value)}
+              value={location}
             />
         </div>
-      ) : (
+      {/* ) : (
         <div onClick={()=>setToggle(false)} className="p-2 w-full rounded-md bg-white border border-gray-400 focus:border-gray-200 outline-none shadow shadow-gray-300 text-black placeholder:text-gray-400 ">
           {city}
         </div>
-      )}
+      )} */}
     </div>
     <ul className="bg-gray-800 divide-y divide-gray-500 rounded-md ">
         {show &&
@@ -76,7 +85,7 @@ export default function Search({ handleClick, data }: any) {
         </button>
       </div>
 
-      <DailyForecast data={data}  city={city} />
+      {/* <DailyForecast data={data}  city={city} /> */}
     </div>
   )
 }

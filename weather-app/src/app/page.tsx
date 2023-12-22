@@ -3,63 +3,53 @@
 import Image from 'next/image'
 import Search from './components/Search'
 import { useCallback, useState } from 'react'
+import DailyForecast from './components/DailyForecast'
 
 export default function Home() {
 
-  const [dailyData, setDailyData] = useState([])
-  const [hourlyData, setHourlyData] = useState([])
+  const [data, setData] = useState({});
+  const [location, setLocation] = useState("");
+  const [error, setError] = useState("");
+
+  const url = `https://api.weatherapi.com/v1/forecast.json?key=538023bd3c43455084733202231905&q=${location}&days=7&aqi=yes&alerts=yes`;
+
+  const handleSearch = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      console.log(location)
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error();
+        }
+        const data = await response.json();
+        setData(data);
+        setLocation("");
+        setError("");
+      } catch (error) {
+        setError("City not found");
+        setData({});
+      }
+    }
+  };
 
   const handleClick = useCallback((city: any) => {
-    const { latitude, longitude, timezone } = city
+    // const { latitude, longitude, timezone } = city
     fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,rain,showers,snowfall,weathercode,windspeed_10m&daily=weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=${timezone}&timeformat=unixtime`
+      `https://api.weatherapi.com/v1/forecast.json?key=538023bd3c43455084733202231905&q=${city}&days=7&aqi=yes&alerts=yes`
     )
       .then((res) => res.json())
       .then((data) => {
-        // setData(data)
+        setData(data)
         console.log(data)
-        const { hourly, daily } = data
-        let hourlyDataSet = []
-        for(let i=0; i<hourly?.time.length; i++)
-        {
-            if(i<7)
-            {
-                setDailyData(dailyData => {
-                    return [
-                        ...dailyData,
-                        {
-                            time: daily?.time[i],
-                            temperature_2m_max: daily?.temperature_2m_max[i],
-                            temperature_2m_min: daily?.temperature_2m_min[i],
-                            weathercode: daily?.weathercode[i],
-                            sunrise: daily?.sunrise[i],
-                            sunset: daily?.sunset[i],
-                        }
-                    ]
-                })
-            }
-
-            hourlyDataSet.push({
-                time: hourly?.time[i],
-                temperature_2m: hourly?.temperature_2m[i],
-                rain: hourly?.rain[i],
-                showers: hourly?.showers[i],
-                snowfall: hourly?.snowfall[i],
-                weathercode: hourly?.weathercode[i],
-                windspeed_10m: hourly?.windspeed_10m[i],
-            })
-        }
-       
-        setHourlyData(hourlyDataSet)
-       
-        console.log(hourlyDataSet)
+        console.log(data?.location)
       })
-
   }, [])
 
   return (
    <main className=" min-h-screen px-4 relative ">
-    <Search handleClick={handleClick} data={dailyData} />
+    <Search handleClick={handleClick} handleSearch={handleSearch} setLocation={setLocation} location={location} />
+    <DailyForecast data={data} />
    </main>
   )
 }
