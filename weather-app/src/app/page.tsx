@@ -48,14 +48,41 @@ export default function Home() {
       })
   }, [])
 
+  let content;
+  if (Object.keys(data).length === 0 && error === "") {
+    content = (
+      <div className="text-white text-center h-screen mt-[5rem]">
+        <h2 className="text-3xl font-semibold mb-4">Welcome to the Weather App</h2>
+        <p className="text-xl">Enter a city name to get the weather forecast</p>
+      </div>
+    );
+  } else if (error !== "") {
+    content = (
+      <div className="text-white text-center h-screen mt-[5rem]">
+        <h2 className="text-3xl font-semibold mb-4">City not found</h2>
+        <p className="text-xl">Please enter a valid city name</p>
+      </div>
+    );
+  } else {
+    content = (
+      <>
+          <DailyForecast data={data} />
+          <div className="flex flex-col lg:flex-row gap-8  mt-10">
+            <WeekForecast data={data} />
+            <HourForecast data={data} />
+          </div>
+      </>
+    );
+  }
+
+
   return (
-   <main className=" min-h-screen px-4 max-w-5xl mx-auto relative overflow-y-hidden">
-    <Search handleClick={handleClick} handleSearch={handleSearch} setLocation={setLocation} location={location} />
-    <DailyForecast data={data} />
-    <div className="flex flex-col lg:flex-row gap-8  mt-10">
-      <WeekForecast  data={data} />
-      <HourForecast  data={data} />
-    </div>
-   </main>
+    <>
+     <main className=" min-h-screen px-4 max-w-5xl mx-auto relative overflow-y-hidden">
+          <Search handleClick={handleClick} handleSearch={handleSearch} setLocation={setLocation} location={location} />
+          {content}
+          
+        </main>
+    </>
   )
 }

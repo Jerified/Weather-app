@@ -17,7 +17,7 @@ export default function Search({ handleClick, handleSearch, setLocation, locatio
   const debouncedValue = useDebounce(location, 500)
   const [cities, setCities] = useState([])
   const [city, setCity] = useState("")
-  
+
   useEffect(() => {
     if (debouncedValue == "") {
       setShow(false)
