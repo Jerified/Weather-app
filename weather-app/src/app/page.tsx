@@ -4,6 +4,8 @@ import Image from 'next/image'
 import Search from './components/Search'
 import { useCallback, useState } from 'react'
 import DailyForecast from './components/DailyForecast'
+import WeekForecast from './components/WeekForecast'
+import HourForecast from './components/HourForecast'
 
 export default function Home() {
 
@@ -42,14 +44,18 @@ export default function Home() {
       .then((data) => {
         setData(data)
         console.log(data)
-        console.log(data?.location)
+        console.log(data?.forecast)
       })
   }, [])
 
   return (
-   <main className=" min-h-screen px-4 relative ">
+   <main className=" min-h-screen px-4 max-w-5xl mx-auto relative overflow-y-hidden">
     <Search handleClick={handleClick} handleSearch={handleSearch} setLocation={setLocation} location={location} />
     <DailyForecast data={data} />
+    <div className="flex flex-col lg:flex-row gap-8  mt-10">
+      <WeekForecast  data={data} />
+      <HourForecast  data={data} />
+    </div>
    </main>
   )
 }

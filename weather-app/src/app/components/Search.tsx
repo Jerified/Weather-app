@@ -17,8 +17,7 @@ export default function Search({ handleClick, handleSearch, setLocation, locatio
   const debouncedValue = useDebounce(location, 500)
   const [cities, setCities] = useState([])
   const [city, setCity] = useState("")
-  // const [toggle, setToggle] = useState(false)
-
+  
   useEffect(() => {
     if (debouncedValue == "") {
       setShow(false)
@@ -45,15 +44,11 @@ export default function Search({ handleClick, handleSearch, setLocation, locatio
     handleClick(city.name)
     setCity(city.name)
     setShow(false)
-    // setToggle(true)
   }
-
-  // console.log(data)
   console.log(city)
   return (
     <div className="">
     <div className="w-full flex md:gap-6 gap-3 items-center text-white my-5">
-      {/* {!toggle ? ( */}
         <div className="w-full flex relative">
             <CiSearch className='absolute top-[0.65rem] left-3 text-3xl' />
             <input
@@ -64,13 +59,8 @@ export default function Search({ handleClick, handleSearch, setLocation, locatio
               value={location}
             />
         </div>
-      {/* ) : (
-        <div onClick={()=>setToggle(false)} className="p-2 w-full rounded-md bg-white border border-gray-400 focus:border-gray-200 outline-none shadow shadow-gray-300 text-black placeholder:text-gray-400 ">
-          {city}
-        </div>
-      )} */}
     </div>
-    <ul className="bg-gray-800 divide-y divide-gray-500 rounded-md ">
+    <ul className="bg-gray-800 divide-y fixed divide-gray-500 rounded-md ">
         {show &&
           cities.map((city: any) => (
             <li onClick={() => handleClickEvent(city)} className="p-3 hover:bg-black transition-all ease-in-out duration-100 text-gray-50" key={city.id}>
