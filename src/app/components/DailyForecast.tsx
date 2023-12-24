@@ -43,7 +43,7 @@ export default function DailyForecast({ data }: CurrentProps) {
   if (!data.forecast) {
     return null;
   }
-  // console.log(data)
+  console.log(data)
   const weatherIcon = data.current ? data.current.condition.icon : null
   const time = data?.location?.localtime
   return (

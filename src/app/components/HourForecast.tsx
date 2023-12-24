@@ -45,20 +45,13 @@ const HourForecast = ({ data }: WeekForecastProps) => {
         const filt = [filteredHour]
         console.log(filt)
         for (let hour of filt) {
-            // Convert the hour to a string in the format HH:mm using moment
             let hourString = moment(hour.time).format('HH:mm');
-            // Test if the hour string matches the regular expression
             if (regex.test(hourString)) {
-                // If it does, add it to the filtered array
                 filtered.push(hour);
             }
         }
-        // day.hour.map(hourData => {
-
         console.log(filtered)
-
     })
-    console.log(filteredData)
 
     if (!data.forecast) {
         return null;

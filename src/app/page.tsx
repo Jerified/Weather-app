@@ -36,7 +36,6 @@ export default function Home() {
   };
 
   const handleClick = useCallback((city: any) => {
-    // const { latitude, longitude, timezone } = city
     fetch(
       `https://api.weatherapi.com/v1/forecast.json?key=538023bd3c43455084733202231905&q=${city}&days=7&aqi=yes&alerts=yes`
     )

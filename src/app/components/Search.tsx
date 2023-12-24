@@ -4,6 +4,7 @@ import useDebounce from "../hooks/useDebounce"
 import { FaLocationCrosshairs } from 'react-icons/fa6'
 import { CiSearch } from 'react-icons/ci'
 import DailyForecast from './DailyForecast'
+import Link from "next/link"
 
 interface InputProps {
   handleSearch: (event: React.KeyboardEvent<HTMLInputElement>) => void
@@ -27,7 +28,8 @@ export default function Search({ handleClick, handleSearch, setLocation, locatio
     fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${debouncedValue}`)
       .then((res) => res.json())
       .then((data) => {
-        if (data?.results.length == 0) {
+        console.log(data.results)
+        if (data?.results.length === 0) {
           setShow(false)
           setCities([])
           return
@@ -70,9 +72,9 @@ export default function Search({ handleClick, handleSearch, setLocation, locatio
       </ul>
 
       <div className="fixed bottom-3  right-3">
-        <button className="bg-green-600 hover:bg-green-700 text-white transition duration-300 px-3 py-4 rounded-full font-semibold tracking-wider text-[0.8rem] md:text-sm flex items-center gap-2">
+        <Link href={'/my-location'} className="bg-green-600 hover:bg-green-700 text-white transition duration-300 px-3 py-4 rounded-full font-semibold tracking-wider text-[0.8rem] md:text-sm flex items-center gap-2">
             <FaLocationCrosshairs className='text-white text-xl' /> Current Location
-        </button>
+        </Link>
       </div>
 
       {/* <DailyForecast data={data}  city={city} /> */}
